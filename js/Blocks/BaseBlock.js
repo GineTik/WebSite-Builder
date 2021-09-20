@@ -14,6 +14,12 @@ export default class BaseBlock {
         this.parent = null
 
         this.#create()
+
+
+        if (NullOrEmptyOf(this.content) || typeof this.content === 'string') return
+        for(let key in this.content) {
+            this.content[key].parent = this 
+        }
     }
 
 
@@ -39,10 +45,14 @@ export default class BaseBlock {
             this.#DOMBlock.href = this.options.href
         }
 
-        this.#DOMBlock.innerHTML = this.getDOMContentString()
+        let content = this.getDOMContentString()
+        for(let key in content) {
+            this.#DOMBlock.append(content[key])
+        }
 
-        if(!NullOrEmptyOf(this.callbackCreate) && typeof this.callbackCreate === 'function') {
-            this.callbackCreate(this.#DOMBlock)
+        console.log(this.#DOMBlock);
+        if(!NullOrEmptyOf(this.afterCreate) && typeof this.afterCreate === 'function') {
+            this.afterCreate(this.#DOMBlock)
         }
     }
 

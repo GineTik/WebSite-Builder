@@ -19,9 +19,9 @@ export default class BoxBlock extends BaseBlock {
 
     // получить контент(внутриности элемента) в ввиде строки
     getDOMContentString() {
-        let content = ''
+        let content = []
         for(let i = 0; i < this.content.length; i++) {
-            content += this.content[i].DOMBlock.outerHTML
+            content.push(this.content[i].DOMBlock)
         }
         return content
     }

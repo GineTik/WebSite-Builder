@@ -35,11 +35,6 @@ export default class Site {
             throw new Error('model == null, передайте model в параметры или в конструктор класса!')
         }
 
-        for(let i = 0; i < this.model.length; i++) {
-            // if(this.model[i] instanceof AddBlock) {
-            //     this.model[i].click = this.addBlock
-            // }
-            this.$body.append(this.model[i].DOMBlock)
-        }
+        this.$body.append(this.model.DOMBlock)
     }
 }

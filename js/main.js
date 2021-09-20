@@ -4,6 +4,14 @@ import Site from './Site.js'
 
 
 var baseModel = {
+    siteWrapper: (content) => new blocks['BoxBlock']({
+        content: content,
+        tag: 'div',
+        styles: {
+            width: '100%',
+            height: '100%'
+        }
+    }),
     h1: () => new blocks['TextBlock']({
         content: 'text',
         tag: 'h1'
@@ -27,11 +35,11 @@ var baseModel = {
     addBlock: () => new blocks['AddBlock']()
 }
 
-let model = [
+let model = baseModel.siteWrapper([
     baseModel.h1(),
     baseModel.navbar(),
     baseModel.addBlock()
-]
+])
 
 let app = new App('#app')
 app.init(model)
