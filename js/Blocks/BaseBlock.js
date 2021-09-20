@@ -11,6 +11,8 @@ export default class BaseBlock {
         this.tag = blockObject.tag ?? 'div';
         this.options = blockObject;
 
+        this.parent = null
+
         this.#create()
     }
 
@@ -29,12 +31,19 @@ export default class BaseBlock {
     #create() {
         this.#DOMBlock = document.createElement(this.tag)
         this.setStyles(this.setStylesForBlock(this.styles))
+        for(let key in this.options.attr ?? {}) {
+            this.#DOMBlock.setAttribute(key, this.options.attr[key])
+        }
 
         if (!NullOrEmptyOf(this.options.href)) {
             this.#DOMBlock.href = this.options.href
         }
 
         this.#DOMBlock.innerHTML = this.getDOMContentString()
+
+        if(!NullOrEmptyOf(this.callbackCreate) && typeof this.callbackCreate === 'function') {
+            this.callbackCreate(this.#DOMBlock)
+        }
     }
 
 

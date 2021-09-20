@@ -1,13 +1,30 @@
+import AddBlock from './Blocks/AddBlock.js'
 import {NullOrEmptyOf} from './until.js'
 
 export default class Site {
-    constructor(model=null) {
+    constructor(selector, model=null) {
+        this.selector = selector
+        this.$body = document.querySelector(selector)
+        if (NullOrEmptyOf(this.$body)) {
+            throw new Error('передайте селектор существующжего элемента')
+        }
         this.setModel(model)
+
+        this.$body.innerHTML += `
+            <style>
+                .add-button:hover {
+                    background: #0000ff33
+                }
+            </style>
+        `
+    }
+    addBlock(event) {
+        console.log(this);
     }
 
     setModel(model) {
         this.model = model
-        this.selectedBlocks = [model]
+        this.selectedBlocks = null
     }
 
     init(model=this.model) {
@@ -19,8 +36,10 @@ export default class Site {
         }
 
         for(let i = 0; i < this.model.length; i++) {
-            document.body.append(this.model[i].DOMBlock)
-            // console.log(this.model[i], this.model[i].DOMBlock)
+            // if(this.model[i] instanceof AddBlock) {
+            //     this.model[i].click = this.addBlock
+            // }
+            this.$body.append(this.model[i].DOMBlock)
         }
     }
 }
