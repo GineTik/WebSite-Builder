@@ -1,5 +1,6 @@
 import { NullOrEmptyOf } from '../until.js'
 import BaseBlock from './BaseBlock.js'
+import {baseModel} from './Blocks.js'
 
 export default class AddBlock extends BaseBlock {
 
@@ -13,10 +14,10 @@ export default class AddBlock extends BaseBlock {
             styles: {
                 border: '2px solid blue',
                 borderRadius: '20px',
-                width: blockObject.styles?.width ?? '100%',
-                height: blockObject.styles?.height ?? '200px',
+                width: blockObject.styles?.width ?? '200px',
+                height: blockObject.styles?.height ?? '30px',
                 cursor: 'pointer',
-                margin: '20px 0 0 0'
+                margin: '20px auto 0 auto'
             }
         }
         super(blockObject)
@@ -30,15 +31,13 @@ export default class AddBlock extends BaseBlock {
     }
 
 
+    // вызываеться после созлания html элемента
     afterCreate(block) {
-        if(NullOrEmptyOf(block)) return
-
         block.onclick = this.click.bind(this)
-        console.log(block);
     }
 
     click(event) {
-        console.log(this);
+        this.parent.addChild(baseModel.h1())
     }
 
 }

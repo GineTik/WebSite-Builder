@@ -50,7 +50,7 @@ export default class BaseBlock {
             this.#DOMBlock.append(content[key])
         }
 
-        console.log(this.#DOMBlock);
+        // console.log(this.#DOMBlock);
         if(!NullOrEmptyOf(this.afterCreate) && typeof this.afterCreate === 'function') {
             this.afterCreate(this.#DOMBlock)
         }

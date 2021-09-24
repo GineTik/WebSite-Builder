@@ -6,7 +6,7 @@ export default class Site {
         this.selector = selector
         this.$body = document.querySelector(selector)
         if (NullOrEmptyOf(this.$body)) {
-            throw new Error('передайте селектор существующжего элемента')
+            throw new Error('передайте селектор существующего элемента')
         }
         this.setModel(model)
 
