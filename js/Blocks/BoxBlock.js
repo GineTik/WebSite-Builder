@@ -3,7 +3,7 @@ import {NullOrEmptyOf} from './../until.js'
 
 export default class BoxBlock extends BaseBlock {
 
-    constructor(blockObject) {
+    constructor(blockObject={}) {
         if(!NullOrEmptyOf(blockObject)) {
             if(!(blockObject.content instanceof Array)) {
                 blockObject.content = [blockObject.content]
@@ -24,6 +24,10 @@ export default class BoxBlock extends BaseBlock {
             content.push(this.content[i].DOMBlock)
         }
         return content
+    }
+
+    afterCreate() {
+        
     }
 
 }

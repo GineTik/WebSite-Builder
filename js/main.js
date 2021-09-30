@@ -4,7 +4,6 @@ import Site from './Site.js'
 
 
 let model = baseModel.siteWrapper([
-    baseModel.h1(),
     baseModel.navbar(),
     baseModel.addBlock()
 ])

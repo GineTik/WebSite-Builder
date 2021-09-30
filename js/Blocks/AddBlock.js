@@ -1,6 +1,6 @@
 import { NullOrEmptyOf } from '../until.js'
 import BaseBlock from './BaseBlock.js'
-import {baseModel} from './Blocks.js'
+import {presentBlocks} from './Blocks.js'
 
 export default class AddBlock extends BaseBlock {
 
@@ -17,7 +17,9 @@ export default class AddBlock extends BaseBlock {
                 width: blockObject.styles?.width ?? '200px',
                 height: blockObject.styles?.height ?? '30px',
                 cursor: 'pointer',
-                margin: '20px auto 0 auto'
+                margin: blockObject.styles?.margin ?? '20px auto 20px auto',
+                display: blockObject.styles?.display ?? 'block',
+                // outline: blockObject.styles?.outline ?? '2px solid #fff'
             }
         }
         super(blockObject)
@@ -33,11 +35,57 @@ export default class AddBlock extends BaseBlock {
 
     // вызываеться после созлания html элемента
     afterCreate(block) {
-        block.onclick = this.click.bind(this)
+        block.onclick = this.click__callback.bind(this)
     }
 
-    click(event) {
-        this.parent.addChild(baseModel.h1())
+    // #DOMBlock
+    // set click(callback) {
+    //     this.click__callback = function(event) {
+    //         callback(event, this)
+    //     }
+    //     this.DOMBlock.onclick = this.click__callback.bind(this)
+    // }
+
+    click__callback(event) {
+        this.app.site.$body.append(this.createAddModalHTML())
+    }
+    addBlock(blockName, e) {
+        let length = this.parent.content.length
+        this.parent.content.splice(length-1, 0, presentBlocks[blockName]);
+        this.app.site.init()
+        this.WrapperModal.click()
+    }
+
+
+    createAddModalHTML() {
+        // create wrapper modal
+        this.WrapperModal = document.createElement('div')
+        let WrapperModal = this.WrapperModal
+        WrapperModal.onclick = function (e) {
+            if(this == e.target) {
+                this.remove()
+            }
+        }
+        WrapperModal.className = 'wrapper-model'
+
+        // create modal
+        let Modal = document.createElement('div')
+        Modal.className = 'model'
+
+        // add modal to wrapper modal
+        WrapperModal.append(Modal)
+
+        // set element in modal
+        for(let key in presentBlocks) {
+            let ModalItem = document.createElement('div')
+            ModalItem.className = 'model-item'
+            ModalItem.append(presentBlocks[key].DOMBlock)
+            ModalItem.onclick = this.addBlock.bind(this, key)
+            Modal.append(ModalItem)
+        }
+
+        //return full modal
+        return WrapperModal
     }
 
 }

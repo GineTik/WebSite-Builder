@@ -15,19 +15,17 @@ export default class BaseBlock {
 
         this.#create()
 
-
         if (NullOrEmptyOf(this.content) || typeof this.content === 'string') return
         for(let key in this.content) {
             this.content[key].parent = this 
         }
     }
 
-
-
     // html элементы
     // get, set
     #DOMBlock
     get DOMBlock() {
+        this.setContent()
         return this.#DOMBlock
     }
 
@@ -45,17 +43,20 @@ export default class BaseBlock {
             this.#DOMBlock.href = this.options.href
         }
 
-        let content = this.getDOMContentString()
-        for(let key in content) {
-            this.#DOMBlock.append(content[key])
-        }
+        this.setContent()
 
-        // console.log(this.#DOMBlock);
         if(!NullOrEmptyOf(this.afterCreate) && typeof this.afterCreate === 'function') {
             this.afterCreate(this.#DOMBlock)
         }
     }
 
+    setContent() {
+        let content = this.getDOMContentString()
+        this.#DOMBlock.innerHTML = ''
+        for(let key in content) {
+            this.#DOMBlock.append(content[key])
+        }
+    }
 
     // получить контент(внетриности элемента) в ввиде строки
     getDOMContentString() {

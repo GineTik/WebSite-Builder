@@ -11,7 +11,7 @@ export default class App {
             <div id='panel' style='width: 250px; background: #efefef'></div>
             <div id='site' style='width: 100%; padding: 20px'></div>
         `
-        this.site = new Site('#site')
+        this.site = new Site('#site', this)
         this.panel = new Panel('#panel')
     }
 

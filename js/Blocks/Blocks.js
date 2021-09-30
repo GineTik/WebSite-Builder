@@ -11,32 +11,81 @@ export var baseModel = {
             height: '100%'
         }
     }),
-    h1: () => new blocks['TextBlock']({
-        content: 'text',
-        tag: 'h1'
+    h1: (text) => new blocks['TextBlock']({
+        content: text ?? 'text',
+        tag: 'h1',
+        styles: {
+            display: 'inline-block',
+            margin: '0'
+        }
+    }),
+    link: (text, href) => new blocks['TextBlock']({
+        content: text,
+        tag: 'a',
+        href: href,
+        styles: {
+            color: '#000',
+            'text-decoration': 'none',
+            margin: '10px 0 0 0'
+        }
+    }),
+    link_white: (text, href) => new blocks['TextBlock']({
+        content: text,
+        tag: 'a',
+        href: href,
+        styles: {
+            color: '#fff',
+            'text-decoration': 'none',
+            margin: '0 0 0 15px'
+        }
     }),
     navbar: () => new blocks['BoxBlock']({
-        content: [new blocks['TextBlock']({
-                content: 'text',
-                tag: 'h1'
-            }),
-            new blocks['TextBlock']({
-                content: 'text',
-                tag: 'h2',
+        content: [
+            baseModel.h1('text'),
+            new blocks['BoxBlock']({
+                content: [
+                    baseModel.link_white('ссылка 1', 'link'),
+                    baseModel.link_white('ссылка 1', 'link'),
+                    baseModel.link_white('ссылка 1', 'link'),
+                    baseModel.link_white('ссылка 1', 'link'),
+                    baseModel.addBlock('inline-block')
+                ],
                 styles: {
-                    margin: '0 0 0 20px',
-                    color: 'blue'
+                    margin: '0 0 0 10px',
+                    color: '#fff',
+                    display: 'flex',
+                    'justify-content': 'flex-start',
+                    'align-items': 'center',
                 }
             })
         ],
+        styles: {
+            background: '#333',
+            color: '#fff',
+            padding: '10px',
+            display: 'flex'
+        },
         tag: 'div'
     }),
-    addBlock: () => new blocks['AddBlock']()
+    addBlock: (display=null) => new blocks['AddBlock']({
+        styles: {
+            display: display,
+            margin: display == 'inline-block' ? '0 10px' : null,
+            width: display == 'inline-block' ? '30px' : null,
+            height: display == 'inline-block' ? '20px' : null
+        }
+    })
 }
 
-var blocks = {
+export var blocks = {
     TextBlock,
     BoxBlock,
     AddBlock
 }
-export default blocks
+
+
+export var presentBlocks = {
+    'navbar': baseModel.navbar(),
+    'h1': baseModel.h1(),
+    'link': baseModel.link('link', '#')
+}
