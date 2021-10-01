@@ -9,6 +9,11 @@ export var baseModel = {
         styles: {
             width: '100%',
             height: '100%'
+        },
+        click__callback: function(event) {
+            if(this.GetHTMLBlock() == event.target) {
+                this.app.initPanel(null)
+            }
         }
     }),
     h1: (text) => new blocks['TextBlock']({
@@ -16,7 +21,7 @@ export var baseModel = {
         tag: 'h1',
         styles: {
             display: 'inline-block',
-            margin: '0'
+            margin: '0 0 0 0'
         }
     }),
     link: (text, href) => new blocks['TextBlock']({
@@ -62,7 +67,7 @@ export var baseModel = {
         styles: {
             background: '#333',
             color: '#fff',
-            padding: '10px',
+            padding: '10px 10px 10px 10px',
             display: 'flex'
         },
         tag: 'div'

@@ -34,16 +34,8 @@ export default class AddBlock extends BaseBlock {
 
 
     // вызываеться после созлания html элемента
-    afterCreate(block) {
-        block.onclick = this.click__callback.bind(this)
-    }
-
-    // #DOMBlock
-    // set click(callback) {
-    //     this.click__callback = function(event) {
-    //         callback(event, this)
-    //     }
-    //     this.DOMBlock.onclick = this.click__callback.bind(this)
+    // afterCreate(block) {
+    //     block.addEventListener('click', (event) => console.log(event.target.onclick))
     // }
 
     click__callback(event) {
@@ -52,7 +44,7 @@ export default class AddBlock extends BaseBlock {
     addBlock(blockName, e) {
         let length = this.parent.content.length
         this.parent.content.splice(length-1, 0, presentBlocks[blockName]);
-        this.app.site.init()
+        this.app.initSite()
         this.WrapperModal.click()
     }
 

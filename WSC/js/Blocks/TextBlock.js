@@ -1,5 +1,5 @@
 import BaseBlock from './BaseBlock.js'
-import {NullOrEmptyOf} from './../until.js'
+import {NullOrEmptyOf} from '../until.js'
 
 
 export default class TextBlock extends BaseBlock {

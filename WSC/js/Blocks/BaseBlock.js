@@ -1,4 +1,4 @@
-import {NullOrEmptyOf} from './../until.js'
+import {NullOrEmptyOf} from '../until.js'
 
 export default class BaseBlock {
 
@@ -9,11 +9,12 @@ export default class BaseBlock {
         this.content = blockObject.content ?? ''
         this.styles = blockObject.styles ?? {}
         this.tag = blockObject.tag ?? 'div';
+        this.click__callback = blockObject.click__callback ?? this.click__callback;
         this.options = blockObject;
 
         this.parent = null
 
-        this.#create()
+        // this.#create()
 
         if (NullOrEmptyOf(this.content) || typeof this.content === 'string') return
         for(let key in this.content) {
@@ -25,10 +26,20 @@ export default class BaseBlock {
     // get, set
     #DOMBlock
     get DOMBlock() {
-        this.setContent()
+        this.#create()
+        return this.#DOMBlock
+    }
+    GetHTMLBlock() {
         return this.#DOMBlock
     }
 
+
+    click__callback(event) {
+        event.preventDefault()
+        if(this.GetHTMLBlock() == event.target) {
+            this.app.initPanel(this)
+        }
+    }
 
 
     // create dom element
@@ -36,14 +47,15 @@ export default class BaseBlock {
         this.#DOMBlock = document.createElement(this.tag)
         this.setStyles(this.setStylesForBlock(this.styles))
         for(let key in this.options.attr ?? {}) {
-            this.#DOMBlock.setAttribute(key, this.options.attr[key])
+            this.GetHTMLBlock().setAttribute(key, this.options.attr[key])
         }
 
         if (!NullOrEmptyOf(this.options.href)) {
-            this.#DOMBlock.href = this.options.href
+            this.GetHTMLBlock().href = this.options.href
         }
 
         this.setContent()
+        this.GetHTMLBlock().onclick = this.click__callback.bind(this)
 
         if(!NullOrEmptyOf(this.afterCreate) && typeof this.afterCreate === 'function') {
             this.afterCreate(this.#DOMBlock)
@@ -52,9 +64,9 @@ export default class BaseBlock {
 
     setContent() {
         let content = this.getDOMContentString()
-        this.#DOMBlock.innerHTML = ''
+        this.GetHTMLBlock().innerHTML = ''
         for(let key in content) {
-            this.#DOMBlock.append(content[key])
+            this.GetHTMLBlock().append(content[key])
         }
     }
 
@@ -81,9 +93,9 @@ export default class BaseBlock {
     // set style for dom element
     setStylesForBlock(styles) {
         if (!NullOrEmptyOf(styles)) {
-            if(this.#DOMBlock != null) {
+            if(this.GetHTMLBlock() != null) {
                 for (let key in styles) {
-                    this.#DOMBlock.style[key] = styles[key]
+                    this.GetHTMLBlock().style[key] = styles[key]
                 }
             }
         }
